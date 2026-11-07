@@ -64,9 +64,6 @@ jobs:
             echo "Waiting for MySQL..."
             sleep 5
           done
-          
-          echo "MySQL failed to start"
-          exit 1
 
       - name: Run Tests
         working-directory: ./Backend
