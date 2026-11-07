@@ -34,7 +34,7 @@ jobs:
           - 3306:3308
         options: >-
           --health-cmd="mysqladmin ping -h localhost"
-          --health-intervals=10s
+          --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
