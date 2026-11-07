@@ -140,7 +140,7 @@ jobs:
           push: false
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/jewellery-website-project:latest
-            ${{ secrets.DOCKER_PASSWORD ))/jewellery-website-project:${{ github.sha }}
+            ${{ secrets.DOCKER_PASSWORD }}/jewellery-website-project:${{ github.sha }}
           load: true
 
 
