@@ -154,4 +154,4 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/jewellery-website-project:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_PASSWORD }}//jewellery-website-project:latest
+          docker push ${{ secrets.DOCKER_PASSWORD }}/jewellery-website-project:latest
