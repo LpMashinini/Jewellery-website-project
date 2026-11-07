@@ -59,7 +59,7 @@ jobs:
               --silent; then
               echo "MySQL is ready!"
               exit 0
-            if
+            fi
           
             echo "Waiting for MySQL..."
             sleep 5
