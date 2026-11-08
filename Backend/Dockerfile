@@ -10,7 +10,7 @@ RUN useradd --system --create-home appuser
 
 COPY target/*.jar app.jar
 
-RUN chown appuser
+RUN chown appuser:appuser app.jar
 
 USER appuser
 
