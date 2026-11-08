@@ -143,7 +143,7 @@ jobs:
         with:
           image-ref: ${{ secrets.DOCKER_USERNAME }}/jewellery-website-project:${{ github.sha }}
           ignore-unfixed: true
-          severity: CRITICAL, HIGH
+          severity: CRITICAL,HIGH
           exit-code: 1
 
       - name: Push Docker image
