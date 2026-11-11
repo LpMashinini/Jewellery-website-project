@@ -18,23 +18,24 @@ public class Otp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false)
     private String code;
 
     @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
     @Column(name = "expiresAt", nullable = false)
-    private LocalDateTime expiresAt;
+    private LocalDateTime expires_at;
 
     @Column(name = "verified", nullable = false)
-    private Boolean isVerified;
+    private Boolean verified;
 
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private OtpType type;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false )
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }
