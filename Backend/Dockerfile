@@ -1,8 +1,10 @@
 FROM eclipse-temurin:21-jre-jammy
 
+# Update vulnerable Ubuntu packages
 RUN apt-get update \
-    && apt-get upgrade -y \
+    && apt-get install --only-upgrade -y apt libapt-pkg6.0 \
     && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /app
 
