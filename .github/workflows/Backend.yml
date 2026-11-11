@@ -132,10 +132,17 @@ jobs:
           context: ./Backend
           file: ./Backend/Dockerfile
           push: false
+          load: true
+          no-cache: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/jewellery-backend:latest
             ${{ secrets.DOCKER_USERNAME }}/jewellery-backend:${{ github.sha }}
-          load: true
+
+      - name: Check apt versions in image
+        run: |
+          docker run --rm \
+          ${{ secrets.DOCKER_USERNAME }}/jewellery-backend:${{ github.sha }} \
+          bash -c "dpkg -l apt libapt-pkg6.0"
 
 
       - name: Scan Docker Image
