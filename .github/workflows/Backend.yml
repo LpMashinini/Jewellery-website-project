@@ -138,12 +138,6 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/jewellery-backend:latest
             ${{ secrets.DOCKER_USERNAME }}/jewellery-backend:${{ github.sha }}
 
-      - name: Check apt versions in image
-        run: |
-          docker run --rm \
-          ${{ secrets.DOCKER_USERNAME }}/jewellery-backend:${{ github.sha }} \
-          bash -c "dpkg -l apt libapt-pkg6.0"
-
 
       - name: Scan Docker Image
         uses: aquasecurity/trivy-action@v0.36.0
