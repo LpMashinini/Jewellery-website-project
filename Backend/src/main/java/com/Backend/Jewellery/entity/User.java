@@ -33,18 +33,13 @@ public class User {
     private String password;
 
     @Column(name = "isVerified", nullable = false)
-    private Boolean isVerified;
+    private Boolean verified;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.ROLE_CUSTOMER;
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_otp",
-            joinColumns = @JoinColumn(name = "otp"),
-            inverseJoinColumns = @JoinColumn( name = "user_id")
-    )
-    List<Otp> otp = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Otp> otp = new ArrayList<>();
 }
