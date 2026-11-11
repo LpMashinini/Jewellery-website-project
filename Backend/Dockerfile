@@ -1,15 +1,13 @@
 FROM eclipse-temurin:21-jre-jammy
 
 # Update APT and install the security-patched packages
-RUN apt-get update -o Acquire::Retries=0 \
-    && apt-get install --only-upgrade -y \
-       -o Acquire::Retries=0 \
-       apt=2.4.15ubuntu0.1 \
-       libapt-pkg6.0=2.4.15ubuntu0.1 \
+# Update Ubuntu packages, including the APT security fix
+RUN apt-get -o Acquire::Retries=0 update \
+    && apt-get -o Acquire::Retries=0 upgrade -y \
     && dpkg-query -W -f='${Version}\n' apt \
     && dpkg-query -W -f='${Version}\n' libapt-pkg6.0 \
-    && test "$(dpkg-query -W -f='${Version}' apt)" = "2.4.15ubuntu0.1" \
-    && test "$(dpkg-query -W -f='${Version}' libapt-pkg6.0)" = "2.4.15ubuntu0.1" \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' apt)" ge "2.4.15ubuntu0.1" \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libapt-pkg6.0)" ge "2.4.15ubuntu0.1" \
     && rm -rf /var/lib/apt/lists/*
 
 
