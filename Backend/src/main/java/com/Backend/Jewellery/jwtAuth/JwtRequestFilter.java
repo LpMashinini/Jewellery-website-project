@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class jwtRequestFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
     private JwtUtil jwtUtil;
