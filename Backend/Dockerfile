@@ -1,8 +1,15 @@
 FROM eclipse-temurin:21-jre-jammy
 
-# Update vulnerable Ubuntu packages
-RUN apt-get update \
-    && apt-get install --only-upgrade -y apt libapt-pkg6.0 \
+# Update APT and install the security-patched packages
+RUN apt-get update -o Acquire::Retries=0 \
+    && apt-get install --only-upgrade -y \
+       -o Acquire::Retries=0 \
+       apt=2.4.15ubuntu0.1 \
+       libapt-pkg6.0=2.4.15ubuntu0.1 \
+    && dpkg-query -W -f='${Version}\n' apt \
+    && dpkg-query -W -f='${Version}\n' libapt-pkg6.0 \
+    && test "$(dpkg-query -W -f='${Version}' apt)" = "2.4.15ubuntu0.1" \
+    && test "$(dpkg-query -W -f='${Version}' libapt-pkg6.0)" = "2.4.15ubuntu0.1" \
     && rm -rf /var/lib/apt/lists/*
 
 
