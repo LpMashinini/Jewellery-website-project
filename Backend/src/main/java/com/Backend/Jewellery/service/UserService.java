@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
-                .disabled(!user.getIsVerified())
+                .disabled(!user.getVerified())
                 .build();
     }
 }
