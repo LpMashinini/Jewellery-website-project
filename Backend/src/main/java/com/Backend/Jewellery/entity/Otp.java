@@ -22,10 +22,10 @@ public class Otp {
     private String code;
 
     @Column(name = "createdAt", nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name = "expiresAt", nullable = false)
-    private LocalDateTime expires_at;
+    private LocalDateTime expiresAt;
 
     @Column(name = "verified", nullable = false)
     private Boolean verified;
