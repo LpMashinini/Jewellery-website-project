@@ -27,9 +27,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "order_id")
+    private Orders order;
 
     @Column(name = "reference", nullable = false, length = 100)
     private String reference;
@@ -44,11 +44,17 @@ public class Payment {
     private String currency = "ZAR";
 
     @Column(name = "payment_status", nullable = false)
-    private PaymentStatus status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status = PaymentStatus.PENDING;
 
-    @Column(name = "createdAt", nullable = false)
+    @Column(name = "createdAt", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "paidAt", nullable = false)
+    @Column(name = "paidAt")
     private LocalDateTime paidAt;
+
+    @PrePersist
+    void onCreate(){
+        createdAt = LocalDateTime.now();
+    }
 }

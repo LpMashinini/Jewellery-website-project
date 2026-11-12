@@ -18,5 +18,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     Optional<Payment> findByReference(String reference);
 
-    Optional<Payment> existsByReference(String reference);
+    Boolean existsByReference(String reference);
 }
