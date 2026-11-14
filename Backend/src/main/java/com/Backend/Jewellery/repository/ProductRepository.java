@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Modifying
     @Query(""" 
-            update Product p set p.stockQuanity = p.stockQuantity - :qty
+            update Product p set p.stockQuantity = p.stockQuantity - :qty
             where p.id = :id and p.stockQuantity >= :qty
          """)
 
