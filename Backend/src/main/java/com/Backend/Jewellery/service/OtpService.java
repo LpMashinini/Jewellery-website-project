@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OtpService {
 
-    private static final int OTP_EXPIRATION_MINUTES = 5;
+    public static final int OTP_EXPIRATION_MINUTES = 5;
 
     private final OtpRepository otpRepository;
     private final SecureRandom secureRandom = new SecureRandom();
