@@ -19,5 +19,7 @@ public interface OtpRepository extends JpaRepository<Otp, Long> {
     List<Otp> findByUser_IdAndVerifiedIsFalseAndExpiresAtBefore(
             Long userid, LocalDateTime now
     );
+
+    void deleteByUser_IdAndTypeAndVerifiedIsFalse(Long userId, OtpType type);
 }
 
