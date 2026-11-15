@@ -1,13 +1,13 @@
 package com.Backend.Jewellery.repository;
 
-import com.Backend.Jewellery.entity.Orders;
+import com.Backend.Jewellery.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepository extends JpaRepository<Orders, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    List<Orders> findByUserIdOrderByCreatedAtDesc(Long userId);
-    Optional<Orders> findByPaymentReference(String paymentReference);
+    List<Order> findByUserIdOrderByCreatedAtDesc(Long userId);
+    Optional<Order> findByPaymentReference(String paymentReference);
 }
