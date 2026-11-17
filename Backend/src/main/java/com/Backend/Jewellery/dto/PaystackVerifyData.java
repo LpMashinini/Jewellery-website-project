@@ -1,5 +1,8 @@
 package com.Backend.Jewellery.dto;
 
+import lombok.Data;
+
+@Data
 public class PaystackVerifyData {
 
     private Long id;
