@@ -24,6 +24,4 @@ public class UserRegistrationRequest {
     @Size(min = 8, message = "Passoword must be at least 8 characters")
     private String password;
 
-    @NotBlank(message = "Phone number is required")
-    private String phoneNumber;
 }

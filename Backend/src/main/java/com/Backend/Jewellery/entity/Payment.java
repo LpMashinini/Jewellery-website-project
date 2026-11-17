@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.swing.text.AbstractDocument;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -29,7 +28,7 @@ public class Payment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id")
-    private Orders order;
+    private Order order;
 
     @Column(name = "reference", nullable = false, length = 100)
     private String reference;
