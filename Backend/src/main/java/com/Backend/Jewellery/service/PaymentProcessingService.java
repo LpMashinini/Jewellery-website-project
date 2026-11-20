@@ -45,6 +45,5 @@ public class PaymentProcessingService {
 
         eventPublisher.publishEvent(new OrderPaidEvent(order.getId()));
 
-
     }
 }
