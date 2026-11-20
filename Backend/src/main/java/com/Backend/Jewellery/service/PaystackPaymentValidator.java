@@ -56,6 +56,7 @@ public class PaystackPaymentValidator {
         if (!"success".equalsIgnoreCase(transaction.getStatus())){
             throw new IllegalStateException("Paystack transaction is not successful");
         }
+
     }
 
 
