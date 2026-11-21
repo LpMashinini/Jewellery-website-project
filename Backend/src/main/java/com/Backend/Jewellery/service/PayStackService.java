@@ -2,6 +2,8 @@ package com.Backend.Jewellery.service;
 
 import com.Backend.Jewellery.dto.PayStackInitializeRequest;
 import com.Backend.Jewellery.dto.PaystackInitializeResponse;
+import com.Backend.Jewellery.dto.PaystackVerifyData;
+import com.Backend.Jewellery.dto.PaystackVerifyResponse;
 import com.Backend.Jewellery.entity.Order;
 import com.Backend.Jewellery.entity.OrderStatus;
 import com.Backend.Jewellery.entity.Payment;
@@ -27,6 +29,7 @@ public class PayStackService {
 
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
+    private final PaymentProcessingService paymentProcessingService;
 
 
     @Value("${paystack.secret-key}")
@@ -90,6 +93,36 @@ public class PayStackService {
         payment.setAmount(amount);
         payment.setCurrency("ZAR");
         payment.setStatus(PaymentStatus.PENDING);
+
+        return response;
+    }
+
+    public PaystackVerifyResponse verifyTransaction(String reference){
+
+        if (reference == null || reference.isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Payment reference is required");
+        }
+
+        RestClient restClient = RestClient.builder()
+                .baseUrl(baseUrl)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + secretKey)
+                .build();
+
+        PaystackVerifyResponse response = restClient
+                .get()
+                .uri("/transaction/verify/{reference}", reference)
+                .retrieve()
+                .body(PaystackVerifyResponse.class);
+
+        if (response == null || !response.isStatus() || response.getData() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Unable to verify payment");
+        }
+
+        PaystackVerifyData transaction = response.getData();
+
+        if ("success".equalsIgnoreCase(transaction.getStatus())) {
+            paymentProcessingService.processVerifiedPayment(reference, transaction);
+        }
 
         return response;
     }
