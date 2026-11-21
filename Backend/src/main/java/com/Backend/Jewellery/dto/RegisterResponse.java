@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterResponse {
 
-    private Long userid;
+    private Long userId;
     private String email;
     private Boolean verified;
     private String message;
