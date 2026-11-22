@@ -37,11 +37,6 @@ public class AuthController {
 
     }
 
-    @PostMapping("/login")
-    public AuthResponse login(@Valid @RequestBody AuthRequest request){
-        return authService.login(request);
-    }
-
     @PostMapping("/verify-email")
     public MessageResponse verifyEmail(@Valid @RequestBody EmailVerificationRequest request){
 
@@ -52,5 +47,18 @@ public class AuthController {
         }
 
         return new MessageResponse("Email verified. you can log in.");
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@Valid @RequestBody AuthRequest request){
+        return authService.login(request);
+    }
+
+
+    @PostMapping("/resend-code")
+    public MessageResponse resendCode(@Valid @RequestBody ResendCodeRequest request){
+
+        userService.initiateEmailVerification(request.getEmail());
+        return new MessageResponse("Code has been sent");
     }
 }
