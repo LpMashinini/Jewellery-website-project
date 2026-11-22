@@ -77,6 +77,11 @@ public class UserService implements UserDetailsService {
                 .orElse(false);
     }
 
+    public User getUserByEmail(String email){
+        return userRepository.findByEmail(email.trim().toLowerCase())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found"));
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
