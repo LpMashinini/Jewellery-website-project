@@ -30,12 +30,14 @@ public class AuthService {
         Authentication authentication;
 
         try{
+
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             email,
                             request.getPassword()
                     )
             );
+
         } catch (BadCredentialsException | DisabledException e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect email or password. just registered ? verify your email first");
         }
@@ -44,7 +46,7 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails);
         User user = userService.getUserByEmail(email);
 
-        return new AuthResponse(token, user.getId(), user.getName(), user.getEmail());
+        return new AuthResponse(token, user.getId(), user.getName(), user.getEmail(), user.getVerified());
 
     }
 }
