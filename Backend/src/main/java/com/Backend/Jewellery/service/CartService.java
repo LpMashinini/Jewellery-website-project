@@ -2,6 +2,7 @@ package com.Backend.Jewellery.service;
 
 import com.Backend.Jewellery.dto.CartResponse;
 import com.Backend.Jewellery.entity.Cart;
+import com.Backend.Jewellery.entity.CartItem;
 import com.Backend.Jewellery.entity.Product;
 import com.Backend.Jewellery.repository.CartRepository;
 import com.Backend.Jewellery.repository.ProductRepository;
@@ -27,6 +28,37 @@ public class CartService {
         return cartRepository.findByUserId(userId)
                 .map(CartResponse::from)
                 .orElse(CartResponse.empty());
+    }
+
+    @Transactional
+    public CartResponse addToCart(Long userId, Long productId, int quantity){
+
+        requirePositive(quantity);
+
+        Cart cart = getOrCreateCart(userId);
+        Product product = findProduct(productId);
+
+        CartItem existing = cart.getItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElse(null);
+
+
+        int newQuantity = (existing == null? 0 : existing.getQuantity() + quantity);
+        checkStock(product,newQuantity);
+
+        if (existing == null){
+            CartItem item = new CartItem();
+            item.setCart(cart);
+            item.setProduct(product);
+            item.setQuantity(newQuantity);
+            cart.getItems().add(item);
+
+        }else {
+            existing.setQuantity(newQuantity);
+        }
+
+        return CartResponse.from(cart);
     }
 
     private Cart getOrCreateCart(Long userId){
