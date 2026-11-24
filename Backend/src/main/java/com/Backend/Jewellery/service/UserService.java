@@ -5,6 +5,7 @@ import com.Backend.Jewellery.entity.Otp;
 import com.Backend.Jewellery.entity.OtpType;
 import com.Backend.Jewellery.entity.Role;
 import com.Backend.Jewellery.entity.User;
+import com.Backend.Jewellery.jwtAuth.AppUserDetails;
 import com.Backend.Jewellery.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,11 +29,11 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
-    public User registerUser(UserRegistrationRequest request){
+    public User registerUser(UserRegistrationRequest request) {
 
         String email = request.getEmail().trim().toLowerCase();
 
-        if (userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
         }
 
@@ -51,9 +52,9 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void initiateEmailVerification(String email){
+    public void initiateEmailVerification(String email) {
         userRepository.findByEmail(email.trim().toLowerCase())
-                .filter(user ->  !user.getVerified())
+                .filter(user -> !user.getVerified())
                 .ifPresent(user -> {
                     Otp otp = otpService.createOtp(user, OtpType.EMAIL_VERIFICATION);
 
@@ -63,11 +64,11 @@ public class UserService implements UserDetailsService {
 
 
     @Transactional
-    public boolean verifyEmailOtp(String email, String code){
+    public boolean verifyEmailOtp(String email, String code) {
 
         return userRepository.findByEmail(email.trim().toLowerCase())
                 .map(user -> {
-                    boolean valid = otpService.validateOtp(user,code, OtpType.EMAIL_VERIFICATION);
+                    boolean valid = otpService.validateOtp(user, code, OtpType.EMAIL_VERIFICATION);
 
                     if (valid) {
                         user.setVerified(true);
@@ -77,7 +78,7 @@ public class UserService implements UserDetailsService {
                 .orElse(false);
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email.trim().toLowerCase())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found"));
     }
@@ -86,18 +87,10 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email.trim().toLowerCase()).orElseThrow(
-                () -> new UsernameNotFoundException("User not found")
-        );
+        User user = userRepository.findByEmail(email.trim().toLowerCase())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
-                .authorities(user.getRole().name())
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(!user.getVerified())
-                .build();
+        return new AppUserDetails(user);
+
     }
 }
