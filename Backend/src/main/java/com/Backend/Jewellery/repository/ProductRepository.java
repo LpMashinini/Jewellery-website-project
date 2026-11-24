@@ -22,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     int decrementStock(@Param("id") Long id, @Param("qty") int qty);
 
     @Override
-    @EntityGraph(attributePaths = "catehory")
+    @EntityGraph(attributePaths = "category")
     Page<Product> findAll(Pageable pageable);
 
     @EntityGraph(attributePaths = "category")
