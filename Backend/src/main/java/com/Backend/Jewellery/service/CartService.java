@@ -2,6 +2,7 @@ package com.Backend.Jewellery.service;
 
 import com.Backend.Jewellery.dto.CartResponse;
 import com.Backend.Jewellery.entity.Cart;
+import com.Backend.Jewellery.entity.Product;
 import com.Backend.Jewellery.repository.CartRepository;
 import com.Backend.Jewellery.repository.ProductRepository;
 import com.Backend.Jewellery.repository.UserRepository;
@@ -43,6 +44,13 @@ public class CartService {
         return cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "cart not found"));
     }
+
+    private Product findProduct(Long productId){
+        return  productRepository.findById(productId)
+                .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
+    }
+
+
 
 
 }
