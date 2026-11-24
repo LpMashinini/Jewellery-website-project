@@ -50,7 +50,19 @@ public class CartService {
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found"));
     }
 
+    private void requirePositive(int quantity){
+        if (quantity < 1){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be at least 1");
+        }
+    }
 
+    private void checkStock(Product product, int requested){
+        if (requested > product.getStockQuantity()){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Not enough stock available for " + product.getName()
+            );
+        }
+    }
 
 
 }
