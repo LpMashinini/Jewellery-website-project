@@ -8,7 +8,6 @@ import com.Backend.Jewellery.repository.CartRepository;
 import com.Backend.Jewellery.repository.ProductRepository;
 import com.Backend.Jewellery.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
