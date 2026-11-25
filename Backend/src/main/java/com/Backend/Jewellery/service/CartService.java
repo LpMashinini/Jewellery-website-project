@@ -80,6 +80,18 @@ public class CartService {
         return CartResponse.from(cart);
     }
 
+    @Transactional
+    public CartResponse removeItem(Long userId, Long productId){
+
+        return cartRepository.findByUserId(userId)
+                .map(cart -> {
+                    cart.getItems().removeIf(i -> i.getProduct().getId().equals(productId));
+
+                    return CartResponse.from(cart);
+                })
+                .orElse(CartResponse.empty());
+    }
+
     private Cart getOrCreateCart(Long userId){
 
         return cartRepository.findByUserId(userId)
