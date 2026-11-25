@@ -61,6 +61,25 @@ public class CartService {
         return CartResponse.from(cart);
     }
 
+    @Transactional
+    public CartResponse updateQuantity(Long userId, Long productId, int quantity){
+
+        requirePositive(quantity);
+
+        Cart cart = findCart(userId);
+        CartItem item = cart.getItems().stream()
+                .filter(i -> i.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Item not found"
+                ));
+
+        checkStock(item.getProduct(), quantity);
+        item.setQuantity(quantity);
+
+        return CartResponse.from(cart);
+    }
+
     private Cart getOrCreateCart(Long userId){
 
         return cartRepository.findByUserId(userId)
